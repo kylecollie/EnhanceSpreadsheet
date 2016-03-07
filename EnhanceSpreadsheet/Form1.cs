@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace EnhanceSpreadsheet
@@ -62,9 +63,37 @@ namespace EnhanceSpreadsheet
             }
         }
 
-        private string GetCarNumber(string v)
+        private string GetCarNumber(string bol)
         {
-            return v;
+            string DBConnectionString = @"Data Source=PRD-DBSVR-01;
+                                                      Integrated Security=True;
+                                                      Connect Timeout=15;
+                                                      Encrypt=False;
+                                                      TrustServerCertificate=False;
+                                                      ApplicationIntent=ReadWrite;
+                                                      MultiSubnetFailover=False";
+
+            string DBSql = "SELECT UnitID FROM Trips T JOIN TripsRef TR ON T.TripID = TR.TripID WHERE T.CustomerID = @CustomerID AND T.BOLCustomer = @BOLCustomer";
+            string car = null;
+            int customerID = 119;
+
+            using (SqlConnection DBConnection = new SqlConnection(DBConnectionString))
+            {
+                using (SqlCommand DBCommand = new SqlCommand(DBSql, DBConnection))
+                {
+                    DBCommand.CommandType = CommandType.Text;
+                    DBCommand.Parameters.AddWithValue("@BOLCustomer", bol);
+                    DBCommand.Parameters.AddWithValue("@CustomerID", customerID);
+                    DBConnection.Open();
+                    object o = DBCommand.ExecuteScalar();
+                    if (o != null)
+                    {
+                        car = o.ToString();
+                    }
+                    DBConnection.Close();
+                }
+            }
+            return car;
         }
 
         private void button2_Click(object sender, EventArgs e)
