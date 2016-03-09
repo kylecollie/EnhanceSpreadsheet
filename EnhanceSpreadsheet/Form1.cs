@@ -57,15 +57,16 @@ namespace EnhanceSpreadsheet
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: Could not read file from desk. Original error: " + ex.Message);
+                    MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
                     throw;
                 }
             }
         }
 
         private string GetCarNumber(string bol)
-        {
+        { 
             string DBConnectionString = @"Data Source=PRD-DBSVR-01;
+                                                      Initial Catalog=Host32;
                                                       Integrated Security=True;
                                                       Connect Timeout=15;
                                                       Encrypt=False;
