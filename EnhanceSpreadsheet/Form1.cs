@@ -13,6 +13,7 @@ namespace EnhanceSpreadsheet
         private int customerID = 119;
         private string _DBUserID = Properties.Settings.Default.DBUserID;
         private string _DBPassword = Properties.Settings.Default.DBPassword;
+        private string _DBServer = Properties.Settings.Default.DBServerDev;
         
         private string DBConnectionString;
         
@@ -20,8 +21,10 @@ namespace EnhanceSpreadsheet
         {
             InitializeComponent();
 
-            DBConnectionString = @"Data Source=PRD-DBSVR-01;Initial Catalog=Host32;Integrated Security=False;User ID=" 
-                                              +_DBUserID +
+            DBConnectionString = @"Data Source="
+                                              + _DBServer +
+                                              ";Initial Catalog=Host32;Integrated Security=False;User ID=" 
+                                              + _DBUserID +
                                               @";Password="
                                               + _DBPassword +
                                               @";Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
@@ -94,20 +97,30 @@ namespace EnhanceSpreadsheet
 
         private bool UpdateDescription(string TransactionNumber, string MaterialDescription)
         {
-            throw new NotImplementedException();
-            //SqlConnection sqlConnection1 = new SqlConnection("Your Connection String");
-            //SqlCommand cmd = new SqlCommand();
-            //Int32 rowsAffected;
+            string DBSql = "ErgonProductDescription_u]";
+            int rowsAffected;
+            using (SqlConnection DBConnection = new SqlConnection(DBConnectionString))
+            {
+                using (SqlCommand DBCommand = new SqlCommand(DBSql, DBConnection) )
+                {
+                    DBCommand.CommandType = CommandType.StoredProcedure;
+                    DBCommand.Parameters.AddWithValue("@BOL", TransactionNumber);
+                    DBCommand.Parameters.AddWithValue("@Description", MaterialDescription);
+                    DBConnection.Open();
+                    rowsAffected = DBCommand.ExecuteNonQuery();
+                    DBConnection.Close();
+                    if (rowsAffected == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
 
-            //cmd.CommandText = "StoredProcedureName";
-            //cmd.CommandType = CommandType.StoredProcedure;
-            //cmd.Connection = sqlConnection1;
-
-            //sqlConnection1.Open();
-
-            //rowsAffected = cmd.ExecuteNonQuery();
-
-            //sqlConnection1.Close();
+            
         }
 
         private string GetCurrentDescription(string bol)

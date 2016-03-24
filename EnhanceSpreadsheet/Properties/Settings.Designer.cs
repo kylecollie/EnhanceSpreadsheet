@@ -40,5 +40,32 @@ namespace EnhanceSpreadsheet.Properties {
                 return ((string)(this["DBPassword"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("PRD-DBSVR-01")]
+        public string DBServerProd {
+            get {
+                return ((string)(this["DBServerProd"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("TST-DBSVR-01\\TST01")]
+        public string DBServerTest {
+            get {
+                return ((string)(this["DBServerTest"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DEV-DBSVR-01\\DEV01")]
+        public string DBServerDev {
+            get {
+                return ((string)(this["DBServerDev"]));
+            }
+        }
     }
 }
