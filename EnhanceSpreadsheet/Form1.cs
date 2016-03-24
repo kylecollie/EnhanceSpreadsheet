@@ -22,12 +22,18 @@ namespace EnhanceSpreadsheet
             InitializeComponent();
 
             DBConnectionString = @"Data Source="
-                                              + _DBServer +
-                                              ";Initial Catalog=Host32;Integrated Security=False;User ID=" 
-                                              + _DBUserID +
-                                              @";Password="
-                                              + _DBPassword +
-                                              @";Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+                                   + _DBServer +
+                                   ";Initial Catalog=Host32;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+
+            // "Server=TST-DBSVR-01\TST01;Database=QTSGlobal;Trusted_Connection=Yes" 
+
+            //DBConnectionString = @"Data Source="
+            //                                  + _DBServer +
+            //                                  ";Initial Catalog=Host32;Integrated Security=False;User ID=" 
+            //                                  + _DBUserID +
+            //                                  @";Password="
+            //                                  + _DBPassword +
+            //                                  @";Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         }
 
@@ -97,7 +103,7 @@ namespace EnhanceSpreadsheet
 
         private bool UpdateDescription(string TransactionNumber, string MaterialDescription)
         {
-            string DBSql = "ErgonProductDescription_u]";
+            string DBSql = "ErgonProductDescription_u";
             int rowsAffected;
             using (SqlConnection DBConnection = new SqlConnection(DBConnectionString))
             {
@@ -109,7 +115,7 @@ namespace EnhanceSpreadsheet
                     DBConnection.Open();
                     rowsAffected = DBCommand.ExecuteNonQuery();
                     DBConnection.Close();
-                    if (rowsAffected == 0)
+                    if (rowsAffected > 0)
                     {
                         return true;
                     }
